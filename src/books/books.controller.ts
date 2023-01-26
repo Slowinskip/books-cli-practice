@@ -6,9 +6,11 @@ import {
   NotFoundException,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { Param } from '@nestjs/common/decorators';
 import { ParseUUIDPipe } from '@nestjs/common/pipes';
+import { JwtAuthGuard } from 'src/auth-module/jwt-auth.guard';
 
 import { BooksService } from './books.service';
 import { CreateBookDTO } from './dtos/create-book.dto';
@@ -39,11 +41,13 @@ export class BooksController {
   }
 
   @Post('/')
+  @UseGuards(JwtAuthGuard)
   public create(@Body() bookData: CreateBookDTO) {
     return this.bookService.create(bookData);
   }
 
   @Put('/:id')
+  @UseGuards(JwtAuthGuard)
   async updateById(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() bookData: UpdateBookDTO,
