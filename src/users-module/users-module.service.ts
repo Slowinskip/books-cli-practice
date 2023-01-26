@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/shared/services/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { User, Password } from '@prisma/client';
 import { ConflictException } from '@nestjs/common';
 
@@ -72,7 +72,11 @@ export class UsersModuleService {
           data: userData,
         });
       }
-    } catch {}
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('This email already exists');
+      }
+    }
   }
 
   public delete(id: User['id']): Promise<User> {

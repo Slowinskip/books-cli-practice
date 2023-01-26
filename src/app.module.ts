@@ -11,9 +11,10 @@ import { AuthorsModule } from './authors/authors.module';
 import { BooksModule } from './books/books.module';
 import { UsersModuleModule } from './users-module/users-module.module';
 import { AuthModuleModule } from './auth-module/auth-module.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [AuthorsModule, BooksModule, UsersModuleModule, AuthModuleModule],
+  imports: [AuthorsModule, BooksModule, UsersModuleModule, AuthModuleModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })
