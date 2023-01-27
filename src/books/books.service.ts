@@ -7,8 +7,16 @@ import { ConflictException } from '@nestjs/common/exceptions';
 export class BooksService {
   constructor(private prismaService: PrismaService) {}
 
-  public getAll(): Promise<Book[]> {
-    return this.prismaService.book.findMany();
+  public async getAll(): Promise<User[]> {
+    return this.prismaService.user.findMany({
+      include: {
+        books: {
+          include: {
+            book: true,
+          },
+        },
+      },
+    });
   }
 
   public getById(id: Book['id']): Promise<Book | null> {
@@ -50,6 +58,20 @@ export class BooksService {
     return this.prismaService.book.update({
       where: { id },
       data: bookData,
+    });
+  }
+  public async like(bookId: Book['id'], userId: User['id']): Promise<Book> {
+    return await this.prismaService.book.update({
+      where: { id: bookId },
+      data: {
+        users: {
+          create: {
+            user: {
+              connect: { id: userId },
+            },
+          },
+        },
+      },
     });
   }
 }

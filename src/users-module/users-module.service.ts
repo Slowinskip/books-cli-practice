@@ -81,7 +81,7 @@ export class UsersModuleService {
     }
   }
 
-  public delete(id: User['id']): Promise<User> {
+  public deleteById(id: User['id']): Promise<User> {
     return this.prismaService.user.delete({
       where: { id },
     });
